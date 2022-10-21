@@ -1,0 +1,209 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: 'Quicksand';
+    background: #343434;
+}
+
+/* First Page */
+.name{
+    text-align: center;
+    font-size: 120px;
+    margin-top: 200px;
+    color: white;
+}
+
+.gotoApp{
+    background: #1B1212;
+    color:#fff;
+    margin: 0;
+    padding: 30px 0px;
+    width: 200px;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.gotoApp:hover{
+    background-color: #fff;
+    color: #343434;
+}
+
+@media only screen and (max-width: 1300px){
+    .name{
+        text-align: center;
+        font-size: 90px;
+        margin-top: 230px;
+    }
+}
+
+@media only screen and (max-width: 965px){
+    .name{
+        text-align: center;
+        font-size: 90px;
+        margin-top: 120px;
+    }
+}
+
+@media only screen and (max-width: 800px){
+    .name{
+        text-align: center;
+        font-size: 75px;
+        margin-top: 155px;
+    }
+}
+
+/* Second Page */
+.todoList-all{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+@media (min-width: 640px) {
+    .todoList-all {
+        max-width: 640px;
+    }
+}
+@media (min-width: 768px) {
+    .todoList-all {
+        max-width: 768px;
+    }
+}
+@media (min-width: 1024px) {
+    .todoList-all {
+        max-width: 1024px;
+    }
+}
+@media (min-width: 1280px) {
+    .todoList-all {
+        max-width: 1280px;
+    }
+}
+@media (min-width: 1536px) {
+    .todoList-all {
+        max-width: 1536px;
+    }
+}
+
+.title{
+    margin-top: 32px;
+    color: #f8fafc;
+    font-size: 60px;
+    text-align: center;
+}
+
+.todoList-container{
+    margin-top: 12px;
+}
+
+.todoList{
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.todoItem-container{
+    grid-column: span 6 / span 6;
+    overflow-y: auto;
+}
+
+.todoItem{
+    padding: 32px;
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.todo-empty{
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 64px;
+    padding-bottom: 64px;
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+    --tw-text-opacity: 1;
+    color: rgb(55 65 81 / var(--tw-text-opacity));
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+}
+
+.todoTitle{
+    color: #1c1917;
+    font-size: 20px;
+    line-height: 28px;
+}
+
+.todoDone{
+    color: #1c1917;
+    font-size: 20px;
+    line-height: 28px;
+    text-decoration: line-through;
+}
+
+.todoDescription{
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.addTodo-container{
+    grid-column: span 6 / span 6;
+}
+
+.addTodo{
+    padding: 32px;
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+    --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    border-radius: 4px;
+}
+
+.addTodoInput{
+    width: 100%;
+    padding: 8px;
+    margin-top: 16px;
+    border-width: 1px;
+    border-radius: 4px;
+}
+
+.button-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.markAllDone{
+    width: 200px;
+    margin-bottom: 16px;
+    background-color: white;
+    padding: 16px;
+    border-radius: 4px;
+}
+
+.unmarkAllDone{
+    width: 200px;
+    margin-bottom: 16px;
+    background-color: white;
+    padding: 16px;
+    border-radius: 4px;
+}
+
+.removeAll{
+    width: 200px;
+    margin-bottom: 16px;
+    background-color: white;
+    padding: 16px;
+    border-radius: 4px;
+}
