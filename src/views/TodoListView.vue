@@ -45,15 +45,14 @@
                     title="Mark as undone">&#8630;</button>
             </div>
           </div>
+
+          <!-- IF TODO LIST IS EMPTY SHOW MESSAGE -->
+          <div v-if="todos.length === 0" 
+            class="todo-empty">
+            You don't have any task to do.
+          </div>
         </div>
 
-        <!-- IF TODO LIST IS EMPTY SHOW MESSAGE -->
-        <div v-if="todos.length === 0" 
-          class="todo-empty">
-          You don't have any task to do.
-        </div>
-      </div>
-        <!-- ADD TODO  -->
         <div class="addTodo-container">
           <div class="addTodo">
             <h2 style="font-size: 20px; line-height: 28px; text-align: center;">ADD A TODO</h2>
@@ -63,6 +62,7 @@
               class="addTodoInput">
           </div>
         </div>
+      </div>
     </div>
   </div>
   

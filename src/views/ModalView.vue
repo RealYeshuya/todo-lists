@@ -9,8 +9,8 @@
                         <div class="label">Task:</div>
                         <input type="text" class="edit-task-input">
                         <div class="edit-task-button-container">
-                            <button type="button" @click="close" class="close-button">Close</button>
-                            <button type="button" @click="close" class="update-button">Update</button>
+                            <button type="button" @click="$emit('close')" class="close-button">Close</button>
+                            <button type="button" @click="$emit('close')" class="update-button">Update</button>
                         </div>
                     </div>
                 </div>
@@ -39,11 +39,6 @@ export default {
             required: true,
         }
     },
-    methods: {
-        close() {
-            this.$emit('close')
-        }
-    }
 }
 </script>
 
