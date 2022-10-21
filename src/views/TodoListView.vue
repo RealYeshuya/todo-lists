@@ -125,7 +125,9 @@ export default defineComponent({
     }
 
     function removeAllDone(){
-      todos.value = [];
+      if (confirm("Are you sure to delete all?")){
+        todos.value = [];
+      }
     }
 
     return {
