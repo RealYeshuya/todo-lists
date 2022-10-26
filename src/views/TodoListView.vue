@@ -1,149 +1,163 @@
 <template>
   <div class="todoList-all">
-    <h1 class="title">MY TODOLIST</h1>
+    <header-component />
     <!-- LIST CONTAINER -->
 
     <div class="todoList-container">
       <div class="todoList">
         <div class="todoItem-container" style="height: 500px">
 
-          <!-- BUTTONS TO MARK, UNMARK AND REMOVE ALL TODO -->
-          <div v-if="(todos.length !== 0)">
-            <div class="button-container">
-              <button @click="markAllDone" class="markAllDone">Mark All Done</button>       
-              <button @click="unmarkAllDone" class="unmarkAllDone">Unmark All Done</button>
-              <button @click="removeAllDone" class="removeAll">Remove All</button>
+          <div>
+            <!-- BUTTONS TO MARK, UNMARK AND REMOVE ALL TODO -->
+            <div v-if="(todos.length !== 0)">
+              <button-component 
+                @on-mark-all-done="markAllDone" 
+                @on-unmark-all-done="unmarkAllDone" 
+                @on-remove-all-done="removeAllDone"/>
             </div>
           </div>
 
-          <!-- LIST OF ALL TODOS -->
-          <div v-for="(todo, index) in todos" 
-            :key="index"
-            class="p-8 bg-white shadow-md rounded flex items-center justify-between"
-            :class="{'bg-green-500': todo.done}">
-            <div>
-              <div class="todoTitle"
-                  :class="{todoDone: todo.done}">{{ todo.text }}</div>
-              <div class="todoDescription">{{ todo.createdAt }}</div>
-            </div>
-            <!-- BUTTONS FOR MARK, UNMARK AND REMOVE TODO ITEM -->
-            <div class="space-x-2">
-              <button v-if="!todo.done"
-                      class="px-2 text-blue-600" 
-                      @click="isOpen = true; todoTask = todo.text; indexNumber = index"
-                      title="Edit TODO">&#9998;</button>
-              <button class="px-2 text-red-600" 
-                      @click="removeTodo(index)"
-                      title="Remove TODO">&times;</button>
-              <button v-if="!todo.done" 
-                      class="px-2 text-green-600" 
-                      @click="markAsDone(index)"
-                      title="Mark as done">&check;</button>
-              <button v-else
-                    class="px-2 text-orange-600" 
-                    @click="markAsUndone(index)"
-                    title="Mark as undone">&#8630;</button>
-            </div>
+          <div class="todoItems">
+            <!-- DRAGGABLE LIST OF ALL TODOS -->
+            <draggable 
+              v-model="todos" 
+              @start="drag=true" 
+              @end="drag=false" 
+              item-key="index">
+              <template #item="{ element, index }">
+                <div class="p-8 my-2 bg-white shadow-md rounded flex items-center justify-between"
+                  :class="{'bg-green-500': element.done}">
+                  <todo-list-component
+                    v-model="text"
+                    :indexNum="index" 
+                    :title="element.text" 
+                    :created="element.createdAt" 
+                    :done="element.done"
+                    :update="element.edit"
+                    @edit-text="editTodo"/>
+
+                  <!-- BUTTONS FOR MARK, UNMARK AND REMOVE TODO ITEM -->
+                  <todo-item-button-component 
+                    :mark="element.done"
+                    :indexNum="index"
+                    @on-edit-title="editTodoTitle"
+                    @on-mark-done-todo="markAsDone"
+                    @on-unmark-done-todo="markAsUndone"
+                    @on-remove-todo="removeTodo"/>
+                </div>
+              </template>
+            </draggable>
           </div>
 
-          <!-- IF TODO LIST IS EMPTY SHOW MESSAGE -->
-          <div v-if="todos.length === 0" 
-            class="todo-empty">
-            You don't have any task to do.
-          </div>
+          <!-- IF TODO LIST IS EMPTY -->
+          <empty-list-component v-if="todos.length === 0"/>
         </div>
 
-        <div class="addTodo-container">
-          <div class="addTodo">
-            <h2 style="font-size: 20px; line-height: 28px; text-align: center;">ADD A TODO</h2>
-            <input type="text" 
-              v-model="todoText"
-              @keydown.enter="addTodo"
-              class="addTodoInput">
-          </div>
-        </div>
+        <!-- ADD TODO COMPONENT -->
+        <add-todo-component 
+          v-model="newTodo"
+          @add-todo="addTodo" />
       </div>
     </div>
   </div>
-  
-  <!-- MODAL TO EDIT TASK -->
-  <Modal 
-    :open="isOpen" @close="isOpen = !isOpen"
-    :title="'Edit Task'"
-    :task="todoTask"
-    :indexNum="indexNumber">
-  </Modal>
 </template>
 
 <script lang="ts">
 
-import {defineComponent, ref} from "vue";
-import Modal from "./ModalView.vue"
-import ITodo from "@/types/todos.interface"
-export default defineComponent({
-  components : { Modal },
-  setup(){
-    const todos = ref<ITodo[]>([]);
+  import {defineComponent, ref} from "vue"
+  import ITodo from "@/types/todos.interface" 
+  import draggable from 'vuedraggable'
+  import AddTodoComponent from "@/components/AddTodoComponent.vue"
+  import ButtonComponent from "@/components/ButtonComponent.vue"
+  import EmptyListComponent from "@/components/EmptyListComponent.vue"
+  import TodoItemButtonComponent from "@/components/TodoItemButtonComponent.vue"
+  import TodoListComponent from "@/components/TodoListComponent.vue"
+  import HeaderComponent from "@/components/HeaderComponent.vue"
 
-    const todoText = ref(""); // const todoText = {value: ""}
-    const todoTask = ref(""); // const todoTask = {value: ""}
-    const indexNumber = ref(0); // const indexNumber = {value: 0}
-    const isOpen = ref(false); // const isOpen = {value: false}
+  export default defineComponent({
+    components : { 
+      AddTodoComponent,
+      ButtonComponent, 
+      EmptyListComponent, 
+      HeaderComponent, 
+      TodoItemButtonComponent,
+      TodoListComponent,
+      draggable, 
+    },
+    data(){
+      return {
+        text: "",
+        newTodo: "",
+        drag: false, 
+      }
+    },
+    setup(){
+      const todos = ref<ITodo[]>([]);
 
-    //To add new item to the list
-    function addTodo(): void {
-      todos.value.unshift({
-        text: todoText.value,
-        createdAt: new Date(),
-        done: false,
-      });
+      const indexNumber = ref(0); // const indexNumber = {value: 0}
 
-      todoText.value = "";
-    }
+      //To add new item to the list
+      function addTodo(newTodo: string): void {
+        todos.value.unshift({
+          text: newTodo,
+          createdAt: new Date(),
+          done: false,
+          edit: false,
+        });
+      }
 
-    function markAsDone(index: number): void {
-      todos.value[index].done = true;
-      //console.log(index);
-    }
+      function editTodo(update: { text: string; indexNumber: number; }){
+        todos.value[update.indexNumber].text = update.text;
+        todos.value[update.indexNumber].edit = false;
+        //alert(value.text + value.indexNumber);
+        //editTodoText.value = "";
+      }
 
-    function markAsUndone(index: number): void {
-      todos.value[index].done = false;
-    }
+      function markAsDone(index: number): void {
+        todos.value[index].done = true;
+      }
 
-    function removeTodo(index: number): void {
-      if (confirm("Are you sure?")){
-        todos.value.splice(index, 1);
+      function markAsUndone(index: number): void {
+        todos.value[index].done = false;
+      }
+
+      function removeTodo(index: number): void {
+        if (confirm("Are you sure?")){
+          todos.value.splice(index, 1);
+        }
+      }
+
+      function editTodoTitle(index: number): void {
+        todos.value[index].edit = true;
+      }
+
+      function markAllDone(){
+        todos.value.forEach((todo) => todo.done = true);
+      }
+
+      function unmarkAllDone(){
+        todos.value.forEach((todo) => todo.done = false);
+      }
+
+      function removeAllDone(){
+        if (confirm("Are you sure to delete all?")){
+          todos.value = [];
+        }
+      }
+
+      return {
+        todos,
+        indexNumber,
+        addTodo,
+        editTodoTitle,
+        editTodo,
+        markAsDone,
+        markAsUndone,
+        removeTodo,
+        markAllDone,
+        unmarkAllDone,
+        removeAllDone,  
       }
     }
-
-    function markAllDone(){
-      todos.value.forEach((todo) => todo.done = true);
-    }
-
-    function unmarkAllDone(){
-      todos.value.forEach((todo) => todo.done = false);
-    }
-
-    function removeAllDone(){
-      if (confirm("Are you sure to delete all?")){
-        todos.value = [];
-      }
-    }
-
-    return {
-      todos,
-      todoText,
-      isOpen,
-      todoTask,
-      indexNumber,
-      addTodo,
-      markAsDone,
-      markAsUndone,
-      removeTodo,
-      markAllDone,
-      unmarkAllDone,
-      removeAllDone,
-    }
-  }
-})
+  })
 </script>
