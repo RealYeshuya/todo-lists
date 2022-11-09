@@ -1,16 +1,17 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import TodoListView from '../views/TodoListView.vue'
+import HomeView from '../views/home-view.vue'
+import TodoListView from '../views/todo-list-view.vue'
+import routerNames from '@/constants/router-names'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'home',
+    name: routerNames.HOME,
     component: HomeView
   },
   {
     path: '/todoList',
-    name: 'todoList',
+    name: routerNames.TODOLIST,
     component: TodoListView
   }
 ]

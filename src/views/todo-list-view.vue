@@ -34,11 +34,13 @@
                     :created="element.createdAt" 
                     :done="element.done"
                     :update="element.edit"
-                    @edit-text="editTodo"/>
+                    @edit-todo="editTodo"
+                    @cancel-edit="cancelEditTodo"/>
 
                   <!-- BUTTONS FOR MARK, UNMARK AND REMOVE TODO ITEM -->
                   <todo-item-button-component 
                     :mark="element.done"
+                    :edit="element.edit"
                     :indexNum="index"
                     @on-edit-title="editTodoTitle"
                     @on-mark-done-todo="markAsDone"
@@ -54,9 +56,7 @@
         </div>
 
         <!-- ADD TODO COMPONENT -->
-        <add-todo-component 
-          v-model="newTodo"
-          @add-todo="addTodo" />
+        <add-todo-component v-model="newTodo" @addTodo="addTodo"/>
       </div>
     </div>
   </div>
@@ -65,14 +65,14 @@
 <script lang="ts">
 
   import {defineComponent, ref} from "vue"
-  import ITodo from "@/types/todos.interface" 
-  import draggable from 'vuedraggable'
-  import AddTodoComponent from "@/components/AddTodoComponent.vue"
-  import ButtonComponent from "@/components/ButtonComponent.vue"
-  import EmptyListComponent from "@/components/EmptyListComponent.vue"
-  import TodoItemButtonComponent from "@/components/TodoItemButtonComponent.vue"
-  import TodoListComponent from "@/components/TodoListComponent.vue"
-  import HeaderComponent from "@/components/HeaderComponent.vue"
+  import draggable from "vuedraggable"
+  import AddTodoComponent from "@/components/add-todo-component.vue"
+  import ButtonComponent from "@/components/button-component.vue"
+  import EmptyListComponent from "@/components/empty-list-component.vue"
+  import TodoItemButtonComponent from "@/components/todo-item-button-component.vue"
+  import TodoListComponent from "@/components/todo-list-component.vue"
+  import HeaderComponent from "@/components/header-component.vue"
+  import useTodo from "@/composable/use-todo"
 
   export default defineComponent({
     components : { 
@@ -86,77 +86,44 @@
     },
     data(){
       return {
-        text: "",
-        newTodo: "",
         drag: false, 
       }
     },
     setup(){
-      const todos = ref<ITodo[]>([]);
 
-      const indexNumber = ref(0); // const indexNumber = {value: 0}
-
-      //To add new item to the list
-      function addTodo(newTodo: string): void {
-        todos.value.unshift({
-          text: newTodo,
-          createdAt: new Date(),
-          done: false,
-          edit: false,
-        });
-      }
-
-      function editTodo(update: { text: string; indexNumber: number; }){
-        todos.value[update.indexNumber].text = update.text;
-        todos.value[update.indexNumber].edit = false;
-        //alert(value.text + value.indexNumber);
-        //editTodoText.value = "";
-      }
-
-      function markAsDone(index: number): void {
-        todos.value[index].done = true;
-      }
-
-      function markAsUndone(index: number): void {
-        todos.value[index].done = false;
-      }
-
-      function removeTodo(index: number): void {
-        if (confirm("Are you sure?")){
-          todos.value.splice(index, 1);
-        }
-      }
-
-      function editTodoTitle(index: number): void {
-        todos.value[index].edit = true;
-      }
-
-      function markAllDone(){
-        todos.value.forEach((todo) => todo.done = true);
-      }
-
-      function unmarkAllDone(){
-        todos.value.forEach((todo) => todo.done = false);
-      }
-
-      function removeAllDone(){
-        if (confirm("Are you sure to delete all?")){
-          todos.value = [];
-        }
-      }
-
-      return {
-        todos,
-        indexNumber,
+      const { 
+        todos, 
         addTodo,
-        editTodoTitle,
+        cancelEditTodo,
         editTodo,
+        editTodoTitle,
         markAsDone,
         markAsUndone,
         removeTodo,
         markAllDone,
         unmarkAllDone,
-        removeAllDone,  
+        removeAllDone,
+      } = useTodo();
+      
+      const indexNumber = ref(0); // const indexNumber = {value: 0}
+      const newTodo = ref('')
+      const text = ref('')
+
+      return {
+        todos,
+        newTodo,
+        text,
+        indexNumber, 
+        addTodo,
+        cancelEditTodo,
+        editTodo,
+        editTodoTitle,
+        markAsDone,
+        markAsUndone,
+        removeTodo,
+        markAllDone,
+        unmarkAllDone,
+        removeAllDone,
       }
     }
   })
