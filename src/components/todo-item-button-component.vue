@@ -2,20 +2,20 @@
     <div class="space-x-2">
         <button v-if="!mark"
             class="px-2 text-blue-600" 
-            @click="$emit('on-edit-title', indexNum)"
+            @click="editTodoTitle(indexNum)"
             title="Edit TODO">&#9998;</button>
         <button class="px-2 text-red-600" 
             :class="{'disableButton': edit}"
-            @click="$emit('on-remove-todo', indexNum)"
+            @click="removeTodo(indexNum)"
             title="Remove TODO">&times;</button>
         <button v-if="!mark" 
             class="px-2 text-green-600" 
             :class="{'disableButton': edit}"
-            @click="$emit('on-mark-done-todo', indexNum)"
+            @click="markAsDone(indexNum)"
             title="Mark as done">&check;</button>
         <button v-else
             class="px-2 text-orange-600" 
-            @click="$emit('on-unmark-done-todo', indexNum)"
+            @click="markAsUndone(indexNum)"
             title="Mark as undone">&#8630;
         </button>
     </div>
@@ -39,6 +39,31 @@
             indexNum: {
                 type: Number,
                 required: true,
+            }
+        },
+        setup(props, { emit }){
+
+            const editTodoTitle = (index: number) => {
+                emit("on-edit-title", index)
+            }
+
+            const removeTodo = (index: number) => {
+                emit("on-remove-todo", index)
+            }
+
+            const markAsDone = (index: number) => {
+                emit("on-mark-done-todo", index)
+            }
+
+            const markAsUndone = (index: number) => {
+                emit("on-unmark-done-todo", index)
+            }
+            
+            return {
+                editTodoTitle,
+                removeTodo,
+                markAsDone,
+                markAsUndone,
             }
         },
     })

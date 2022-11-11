@@ -28,14 +28,9 @@
                 <div class="p-8 my-2 bg-white shadow-md rounded flex items-center justify-between"
                   :class="{'bg-green-500': element.done}">
                   <todo-list-component
-                    v-model="text"
-                    :indexNum="index" 
-                    :title="element.text" 
-                    :created="element.createdAt" 
-                    :done="element.done"
-                    :update="element.edit"
-                    @edit-todo="editTodo"
-                    @cancel-edit="cancelEditTodo"/>
+                    :todo="element"
+                    :indexNum="index"
+                    @edit-todo="editTodo"/>
 
                   <!-- BUTTONS FOR MARK, UNMARK AND REMOVE TODO ITEM -->
                   <todo-item-button-component 
@@ -56,7 +51,7 @@
         </div>
 
         <!-- ADD TODO COMPONENT -->
-        <add-todo-component v-model="newTodo" @addTodo="addTodo"/>
+        <add-todo-component @addTodo="addTodo"/>
       </div>
     </div>
   </div>
@@ -94,7 +89,6 @@
       const { 
         todos, 
         addTodo,
-        cancelEditTodo,
         editTodo,
         editTodoTitle,
         markAsDone,
@@ -115,7 +109,6 @@
         text,
         indexNumber, 
         addTodo,
-        cancelEditTodo,
         editTodo,
         editTodoTitle,
         markAsDone,

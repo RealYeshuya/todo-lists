@@ -27,10 +27,6 @@ function useTodo(){
         }
     }
 
-    function cancelEditTodo(index: number): void {
-        todos.value[index].edit = false;
-    }
-
     function markAsDone(index: number): void {
         todos.value[index].done = true;
     }
@@ -66,7 +62,6 @@ function useTodo(){
     return { 
         todos, 
         addTodo,
-        cancelEditTodo,
         editTodo, 
         markAsDone, 
         markAsUndone, 
