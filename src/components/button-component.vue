@@ -12,8 +12,7 @@
 
     export default defineComponent({
         emits: ["on-mark-all-done", "on-unmark-all-done", "on-remove-all-done"],
-        setup(props, {emit}){
-
+        setup(props, { emit }){
             function markAllDone(){
                 emit("on-mark-all-done")
             }

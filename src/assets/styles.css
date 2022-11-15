@@ -213,3 +213,7 @@ body {
     padding: 16px;
     border-radius: 4px;
 }
+
+.disableButton{
+    pointer-events: none;
+}
