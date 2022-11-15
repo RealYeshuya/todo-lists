@@ -2,20 +2,20 @@
     <div class="space-x-2">
         <button v-if="!mark"
             class="px-2 text-blue-600" 
-            @click="editTodoTitle(indexNum)"
+            @click="editTodoTitle(index)"
             title="Edit TODO">&#9998;</button>
         <button class="px-2 text-red-600" 
             :class="{'disableButton': edit}"
-            @click="removeTodo(indexNum)"
+            @click="removeTodo(index)"
             title="Remove TODO">&times;</button>
         <button v-if="!mark" 
             class="px-2 text-green-600" 
             :class="{'disableButton': edit}"
-            @click="markAsDone(indexNum)"
+            @click="markAsDone(index)"
             title="Mark as done">&check;</button>
         <button v-else
             class="px-2 text-orange-600" 
-            @click="markAsUndone(indexNum)"
+            @click="markAsUndone(index)"
             title="Mark as undone">&#8630;
         </button>
     </div>
@@ -36,12 +36,12 @@
                 type: Boolean,
                 required: true,
             },
-            indexNum: {
+            index: {
                 type: Number,
                 required: true,
             }
         },
-        setup(props, { emit }){
+        setup(props, {emit}){
 
             const editTodoTitle = (index: number) => {
                 emit("on-edit-title", index)

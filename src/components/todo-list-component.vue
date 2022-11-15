@@ -1,15 +1,15 @@
 <template>
     <div>
-        <div v-if="!todo.edit"
+        <div v-if="!props.todo.edit"
             class="todoTitle"
-            :class="{todoDone: todo.done}">{{ todo.text }}</div>
+            :class="{todoDone: props.todo.done}">{{ props.todo.text }}</div>
         <div v-else>
             <input type="text" 
                 v-model="edit"
                 class="editTodoInput"
                 @keydown.enter="editTodo(edit, indexNum)"/>  
         </div>  
-        <div class="todoDescription">{{ todo.createdAt }}</div>
+        <div class="todoDescription">{{ props.todo.createdAt }}</div>
     </div>
 </template>
 
@@ -40,7 +40,7 @@
                     emit("edit-todo", text, index)
                 }
 
-            return { editTodo, edit,}
+            return { editTodo, edit, props }
 
             },
         })

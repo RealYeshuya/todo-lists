@@ -36,7 +36,7 @@
                   <todo-item-button-component 
                     :mark="element.done"
                     :edit="element.edit"
-                    :indexNum="index"
+                    :index="index"
                     @on-edit-title="editTodoTitle"
                     @on-mark-done-todo="markAsDone"
                     @on-unmark-done-todo="markAsUndone"
@@ -79,11 +79,6 @@
       TodoListComponent,
       draggable, 
     },
-    data(){
-      return {
-        drag: false, 
-      }
-    },
     setup(){
 
       const { 
@@ -102,12 +97,14 @@
       const indexNumber = ref(0); // const indexNumber = {value: 0}
       const newTodo = ref('')
       const text = ref('')
+      const drag = ref(false)
 
       return {
         todos,
         newTodo,
         text,
         indexNumber, 
+        drag,
         addTodo,
         editTodo,
         editTodoTitle,
