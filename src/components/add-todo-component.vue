@@ -16,7 +16,7 @@
 
     export default defineComponent({
         emits: ["add-todo"],
-        setup(props, { emit }) {
+        setup(props, {emit}) {
 
             const add = ref('')
             
